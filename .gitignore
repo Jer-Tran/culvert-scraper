@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# IDE config files
+.vscode/
+example.PNG
+
+# Pytest caches
+__pycache__
+*/__pycache__
+.pytest_cache
