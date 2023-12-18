@@ -1,19 +1,31 @@
 import cv2
 import sys
 
-def get_files():
+# Input is restricted to either a single file or folder
+def get_files(path: str):
     return
 
-def img_to_data():
+def img_to_data(files: list):
     return
 
-def check_output():
+# Expected output is just a list of strings
+def get_filters(path: str):
     return
 
-def write_output():
+# There should be a scheme to this, so best to find the pattern
+def translate_names(data: list, filter: list):
     return
 
-def main(args):
+def filter_names(data: list, filter: list):
+    return
+
+def check_output(data: list):
+    return
+
+def write_output(data: list):
+    return
+
+def main(args: list):
     # command-line args
     print("hello world")
 
