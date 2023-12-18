@@ -13,7 +13,7 @@ def check_output():
 def write_output():
     return
 
-def main():
+def main(args):
     # command-line args
     print("hello world")
 
@@ -41,4 +41,4 @@ def main():
     write_output()
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv)
