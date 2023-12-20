@@ -1,17 +1,18 @@
 from scraper import main
 import pytest
 
+# Due to each input param being a different file type, it should be easy to not care about the order and just check
+
 # Standard use case of program
 def test_standard():
     # Not sure how to do it, so making it so main() accepts a list of strings, which just parses in the cmdl args
-    args = ['scraper.py', 'filter1.txt', 'tests/sample1']
+    args = ['scraper.py', 'tests/filters/filter1.txt', 'tests/sample1']
     main(args)
 
 # As long as args are valid, the order shouldn't matter
 def test_reverse():
-    args = ['scraper.py', 'filter1.txt', 'tests/sample1']
-
-    r_args = args.reverse()
+    args = ['scraper.py', 'tests/filters/filter1.txt', 'tests/sample1']
+    r_args = ['scraper.py', 'tests/sample1', 'tests/filters/filter1.txt']
 
     main(args)
     with open('output.txt', 'r') as f:

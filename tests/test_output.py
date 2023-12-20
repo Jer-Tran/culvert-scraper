@@ -31,7 +31,7 @@ def test_standard():
     with open('output.csv', 'r') as f:
         output = f.read()
     
-    assert output == '''
-TODO: Insert full expected file contents
-'''
+    # TODO: Insert full expected file contents
+    assert output == ''' '''
+
     

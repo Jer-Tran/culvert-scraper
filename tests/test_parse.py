@@ -1,6 +1,8 @@
 from scraper import get_files, img_to_data
 import pytest
 
+# TODO: Fill in the test asserts with appropraite expected output once images are made
+
 # Handling a single file that fits format
 def test_standard():
     content = get_files('tests/sample4/example.PNG')

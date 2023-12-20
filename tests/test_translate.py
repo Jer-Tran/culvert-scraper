@@ -2,45 +2,77 @@ from scraper import translate_names
 import pytest
 
 # Given how diff the functionality is, considering splitting functionality with filter, or at least partitioning it
+# In-game, it appears to truncate based on length, so this will be a bit difficult to standardise
 
 # Translates truncated names to full, using file
-def test_standard(): # TODO: fill in data later
-    filters = [('a', 'aa')]
-    data = [('name', 'value')]
+def test_standard():
+    filters = ['boshi', 'defenestration', 'pryce']
+    data = [('boshi', 10), ('defenestr..', 11), ('pryce', 12)]
     output = translate_names(data, filters)
-    expected = []
+    expected = [('boshi', 10), ('defenestration', 11), ('pryce', 12)]
+
+    assert output != data
+    assert output == expected
+
+# Both that order does not affect the translation, and order is preserved
+def test_order():
+    filters = ['boshi', 'hendrix', 'cordialisation']
+    data = [('cordialis..', 11), ('boshi', 12), ('hendrix', 13)]
+    output = translate_names(data, filters)
+    expected = [('cordialisation', 11), ('boshi', 12), ('hendrix', 13)]
+
+    assert output != data
+    assert output == expected
+
+# The length of the truncation shouldn't matter, in accordance to in-game variance
+def test_varied_tr_length():
+    filters = ['boshi', 'hendrix', 'cordialisation']
+    data = [('cordialis..', 11), ('bo...', 12), ('hen...', 13)]
+    output = translate_names(data, filters)
+    expected = [('cordialisation', 11), ('boshi', 12), ('hendrix', 13)]
 
     assert output != data
     assert output == expected
 
 # Tr doesn't exist for an abbreviated name
-def test_missing_tr(): # TODO: fill in data later
-    filters = ['a', 'b']
-    data = [('name', 1)]
+def test_missing_tr():
+    filters = ['birdy', 'philip']
+    data = [('anasta..', 1), ('phil..', 2)]
     output = translate_names(data, filters)
+    expected = [('anasta..', 1), ('philip', 2)]
 
     # Reasoning - If it doesn't show up in the filter, it will get filtered out later
+    assert output != data
+    assert data == expected
+
+# Where one name is a substring of one in the filter
+def test_substr():
+    filters = ['abcd', 'focal']
+    data = [('abcdef..', 11), ('focal..', 12)]
+    output = translate_names(data, filters)
+
     assert output == data
+
+# Matches require case sensitivity
+def test_case_sensitive():
+    filters = ['alan', 'furina']
+    data = [('Ala..', 11), ('Furi..', 12)]
+    output = translate_names(data, filters)
+    expected = [('Ala..', 11), ('Furi..', 12)]
+
+    assert output != data
+    assert output == expected
 
 # When the input image has no truncated names
-def test_no_trs(): # TODO: fill in data later
-    filters = ['a', 'b']
-    data = [('name', 1)]
+def test_no_trs():
+    filters = ['alan', 'smithee']
+    data = [('alan', 1), ('smithee', 2)]
     output = translate_names(data, filters)
 
     assert output == data
-
-# Tr exists for data points that don't exist
-def test_extra_trs():# TODO: fill in data later
-    filters = ['a', 'b']
-    data = [('name', 1)]
-    output = translate_names(data, filters)
-
-    assert output == data
-    assert output == [('name', 'value')]
 
 # Empty list as input
-def test_no_data(): # TODO: fill in data later
+def test_no_data():
     filters = ['a', 'b']
     data = []
     output = translate_names(data, filters)
@@ -48,7 +80,7 @@ def test_no_data(): # TODO: fill in data later
     assert output == []
 
 # No overlap between
-def test_no_match(): # TODO: fill in data later
+def test_no_match():
     filters = ['a', 'b']
     data = [('name', 1)]
     output = translate_names(data, filters)
@@ -65,10 +97,23 @@ def test_empty_filter():
 
 # Rare case, when two truncated names look identical
 # Handling here is to skip, safer to be unsure and require manual input
-def test_uncertainty(): # TODO: fill in data later
-    filters = ['a', 'b']
-    data = [('name', 1)]
+def test_uncertainty_double_filter():
+    filters = ['immolation', 'immolate', 'fred']
+    data = [('immo..', 2), ('fred', 14)]
     output = translate_names(data, filters)
 
     assert output == data
-    assert output == [('name', 1)]
+
+def test_uncertain_double_data():
+    filters = ['fragment', 'force']
+    data = [('fragm..', 2), ('frag..', 3)]
+    output = translate_names(data, filters)
+
+    assert output == data
+
+def test_uncertain_double_data_filter():
+    filters = ['fragment', 'fragments']
+    data = [('fragm..', 2), ('frag..', 3)]
+    output = translate_names(data, filters)
+
+    assert output == data
