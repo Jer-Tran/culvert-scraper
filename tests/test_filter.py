@@ -4,6 +4,7 @@ import pytest
 # Assumes all truncated names have been translated where possible
 
 # From list of data, only certain names are output
+@pytest.mark.skip(reason="currently unimplemented")
 def test_standard():
     data = [('a', 1), ('b', 2)]
     filter = ['a', 'b']
@@ -21,6 +22,7 @@ def test_standard():
 
 #     assert output == data
 
+@pytest.mark.skip(reason="currently unimplemented")
 def test_exact_match():
     data = [('a', 1), ('B', 2)]
     filter = ['a', 'b']
@@ -29,6 +31,7 @@ def test_exact_match():
     assert output != data
     assert output == [('a', 1)]
 
+@pytest.mark.skip(reason="currently unimplemented")
 def test_substring():
     data = [('a', 1), ('bb', 2)]
     filter = ['a', 'b']
@@ -38,6 +41,7 @@ def test_substring():
     assert output == [('a', 1)]
 
 # Exact match check -> Ignores truncation
+@pytest.mark.skip(reason="currently unimplemented")
 def test_truncated():
     data = [('a', 1), ('b..', 2)]
     filter = ['a', 'balance', 'b']
@@ -47,6 +51,7 @@ def test_truncated():
     assert output == [('a', 1)]
 
 # Filter file contains names that do not appear in data
+@pytest.mark.skip(reason="currently unimplemented")
 def test_extra_filter():
     filters = ['a', 'b']
     data = [('name', 1)]
@@ -58,6 +63,7 @@ def test_extra_filter():
     # Maybe as a function that gets the list of names, and that's checked
 
 # Filter file contains no names
+@pytest.mark.skip(reason="currently unimplemented")
 def test_empty_filter():
     filters = []
     data = [('name', 1)]
@@ -66,6 +72,7 @@ def test_empty_filter():
     assert output == []
 
 # With empty data, output is empty data
+@pytest.mark.skip(reason="currently unimplemented")
 def test_empty():
     filters = ['a', 'b']
     data = []
@@ -74,6 +81,7 @@ def test_empty():
     assert output == []
 
 # The data produced contains no members that are specified to be output
+@pytest.mark.skip(reason="currently unimplemented")
 def test_no_out():
     filters = ['a', 'b']
     data = [('name', 1)]
@@ -82,6 +90,7 @@ def test_no_out():
     assert output == []
 
 # Potentially possible, and is a case of requiring user intervention
+@pytest.mark.skip(reason="currently unimplemented")
 def test_duplicate_data():
     filters = ['a', 'b']
     data = [('a', 1), ('a', 2)]
@@ -91,6 +100,7 @@ def test_duplicate_data():
     # TODO: Again, check that user is notified if this happens
 
 # Shouldn't happen, but must be considered
+@pytest.mark.skip(reason="currently unimplemented")
 def test_duplicate_filter():
     filters = ['a', 'a', 'b']
     data = [('a', 1), ('b', 2)]

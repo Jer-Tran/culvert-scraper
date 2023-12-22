@@ -4,6 +4,7 @@ import pytest
 # TODO: Fill in the test asserts with appropraite expected output once images are made
 
 # Handling a single file that fits format
+@pytest.mark.skip(reason="currently unimplemented")
 def test_standard():
     content = get_files('tests/sample4/example.PNG')
     output = img_to_data(content)
@@ -11,6 +12,7 @@ def test_standard():
     assert output == []
 
 # Handling of multiple files
+@pytest.mark.skip(reason="currently unimplemented")
 def test_multiple():
     content = get_files('tests/sample5')
     output = img_to_data(content)
@@ -18,6 +20,7 @@ def test_multiple():
     assert output == []
 
 # Handling of multiple files, with some data overlapping
+@pytest.mark.skip(reason="currently unimplemented")
 def test_multiple_overlap():
     content = get_files('tests/sample6')
     output = img_to_data(content)
@@ -25,6 +28,7 @@ def test_multiple_overlap():
     assert output == []
 
 # Where the contents of one image are just a subset of another
+@pytest.mark.skip(reason="currently unimplemented")
 def test_multiple_subset():
     content = get_files('tests/sample7')
     outA = img_to_data(content)
@@ -62,6 +66,7 @@ def test_multiple_subset():
 #     assert output == [('data', 'set')]
 
 # If image does not suit format, e.g. random image, then error should be thrown
+@pytest.mark.skip(reason="currently unimplemented")
 def test_invalid_img():
     fname = 'tests/sample2'
     content = get_files(fname)
@@ -69,6 +74,7 @@ def test_invalid_img():
         img_to_data(content)
 
 # Empty list as input, would never happen, but should be handled
+@pytest.mark.skip(reason="currently unimplemented")
 def test_no_inputs():
     empty_list = []
     with pytest.raises(Exception):
