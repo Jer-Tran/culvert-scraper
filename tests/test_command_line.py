@@ -15,11 +15,11 @@ def test_reverse():
     r_args = ['scraper.py', 'tests/sample1', 'tests/filters/filter1.txt']
 
     assert main(args) == True
-    with open('output.txt', 'r') as f:
+    with open('output.csv', 'r') as f:
         outA = f.read()
     
     assert main(r_args) == True
-    with open('output.txt', 'r') as f:
+    with open('output.csv', 'r') as f:
         outB = f.read()
 
     assert outA == outB
@@ -27,24 +27,24 @@ def test_reverse():
 # If there are excess arguments, should tell user
 def test_extra_args():
     args = ['scraper.py', 'filter1.txt', 'tests/sample1', 'foo', 'bar']
-    with pytest.raises(Exception):
-        main(args)
+    # with pytest.raises(Exception):
+    #     main(args)
+    assert main(args) == False
 
 # Standard error of no args provided
 def test_empty_args():
     args = ['scraper.py']
-    with pytest.raises(Exception):
-        main(args)
+
+    assert main(args) == False
 
 # Missing the folder/file
 def test_missing_args():
     args = ['scraper.py', 'filter1.txt']
-    with pytest.raises(Exception):
-        main(args)
+
+    assert main(args) == False
 
 # Ensures that a list of targets is input
 def test_missing_check():
     args = ['scraper.py', 'tests/sample1']
 
-    with pytest.raises(Exception):
-        main(args)
+    assert main(args) == False

@@ -35,34 +35,54 @@ def check_output(data: list):
 # In: list(str, int)
 # Out: Bool
 def write_output(data: list):
+    with open ('output.csv', 'w') as f:
+        f.write("test,a,b,c")
     return True
 
 def main(args: list):
     # command-line args
-    print("hello world")
+    if len(args) == 3:
+        imgPath = args[1]
+        filterPath = args[2]
+    else:
+        return False
 
     # Get file path
     # Preferrably get as a array of files, to handle batch uploads
-    get_files()
-    # Get contents, image or whatever file
 
+    # Try to get one, if it fails, switch params around, and if fails again, then paths are invalid
+    try:
+        filterContent = get_filters(imgPath)
+    except Exception as e:
+        try:
+            imgPath, filterPath = filterPath, imgPath
+            filterContent = get_filters(imgPath)
+        except Exception as e:
+            return False
+
+    # Get contents of filters now
+    try:
+        fileContent = get_files(filterPath)
+    except Exception as e:
+        return False
+    
     # Process file, get into contents into array
     # This is the core of the program, and will likely be the majority of the work
     # pair (name, score)
-    img_to_data()
+    # img_to_data()
 
     # Additional processing to fit the guild
     #  Stuff where the truncated names will be translated to full
     #  Checks to compare what names showed up
     #  Filtering of what names check for - ensuring this is an opt-in system
-    check_output()
+    # check_output()
 
     # Open output file
     # Mabye can automate filename
     #  202X-Week-X, kind of folder
     #  or maybe just YYYY-MM-DD, monday to the sunday
     # write in csv format
-    write_output()
+    write_output([])
 
     return True
 
