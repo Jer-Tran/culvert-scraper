@@ -1,19 +1,43 @@
 import cv2
 import sys
 
-def get_files():
-    return
+# Input is restricted to either a single file or folder
+def get_files(path: str):
+    return []
 
-def img_to_data():
-    return
+# In: list(str)
+# Out: list(str, int)
+def img_to_data(files: list):
+    return []
 
-def check_output():
-    return
+# Expected output is just a list of strings
+# In: str
+# Out: list(str)
+def get_filters(path: str):
+    return []
 
-def write_output():
-    return
+# There should be a scheme to this, so best to find the pattern
+# In: list(str, int), list(str)
+# Out: list(str, int)
+def translate_names(data: list, filter: list):
+    return []
 
-def main():
+# In: list(str, int), list(str)
+# Out: list(str, int)
+def filter_names(data: list, filter: list):
+    return []
+
+# In: list(str, int)
+# Out: list(str, int)
+def check_output(data: list): 
+    return []
+
+# In: list(str, int)
+# Out: Bool
+def write_output(data: list):
+    return True
+
+def main(args: list):
     # command-line args
     print("hello world")
 
@@ -40,5 +64,7 @@ def main():
     # write in csv format
     write_output()
 
+    return True
+
 if __name__ == '__main__':
-    main()
+    main(sys.argv)
