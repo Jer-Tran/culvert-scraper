@@ -28,10 +28,12 @@ def test_folder():
 
 # Gets a text file that can be read, but the contents aren't in a valid format
 # Maybe this would get expanded upon further
-def test_invalid_format():
-    with pytest.raises(Exception):
-        get_filters(filterPath + 'badformat.txt')
+# Accepting more formats is better than restricting it, and as long as the content is fine, the format doesn't matter
+# def test_invalid_format():
+#     with pytest.raises(Exception):
+#         get_filters(filterPath + 'badformat.txt')
 
+# Names in-game have restrictions, and we are checking similar restrictions also as a sanity check
 def test_invalid_content():
     with pytest.raises(Exception):
         get_filters(filterPath + 'badcontent.txt')

@@ -51,7 +51,7 @@ def img_to_data(files: list):
 def get_filters(path: str):
     names = []
     print("Filter check now")
-    # If path doesn't exist, raise exception
+    # If path doesn't exist or file cannot be read, raise exception
     try:
         with open(path, 'r') as f:
             content = f.read()
@@ -59,7 +59,8 @@ def get_filters(path: str):
     except Exception as e:
         raise e
 
-    # If file cannot be read, raise exception
+    # Basic check that all names are of fine format
+    # print("Error found processing user named: " + name)
 
     names.sort()
 
