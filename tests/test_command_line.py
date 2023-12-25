@@ -2,8 +2,8 @@ from scraper import main
 import pytest
 
 # Due to each input param being a different file type, it should be easy to not care about the order and just check
-filterPath = 'culvert-scraper/tests/filters/filter1.txt'
-folderPath = 'culvert-scraper/tests/sample4'
+filterPath = 'tests/filters/filter1.txt'
+folderPath = 'tests/sample4'
 
 # Standard use case of program
 def test_standard():
