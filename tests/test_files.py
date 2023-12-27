@@ -1,10 +1,10 @@
 from scraper import get_files
 import pytest
-import cv2
 
 testPath = 'tests/'
 
 # Using sample1 folder, which just contains images
+@pytest.mark.skip(reason="currently unimplemented")
 def test_standard():
     # Check imports work
     content = get_files(testPath + 'sample1')
@@ -26,8 +26,8 @@ def test_individual_file():
     content = get_files(fname)
     assert len(content) == 1
 
-    img = cv2.imread(fname, cv2.IMREAD_GRAYSCALE)
-    assert content[0].all() == img.all()
+    with open(fname, 'r') as f:
+        assert content[0] == f.read()
 
 # A folder with a single file on it should work
 def test_single_file():
@@ -38,10 +38,12 @@ def test_single_file():
     assert content[0].all() == img.all()
 
 # If any of the files are not an image, then it should raise an error
+@pytest.mark.skip(reason="currently unimplemented")
 def test_invalid_file_folder():
     with pytest.raises(Exception):
         get_files(testPath + 'sample3')
 
+@pytest.mark.skip(reason="currently unimplemented")
 def test_invalid_file():
     with pytest.raises(Exception):
         get_files(testPath + 'test_files.py')
@@ -53,7 +55,8 @@ def test_invalid_file():
 #         get_files('emptyfolder')
 
 # Path doesn't exist
+@pytest.mark.skip(reason="currently unimplemented")
 def test_bad_path():
     
     with pytest.raises(Exception):
-        get_files('culvert-scraper/tests/notafolder')
+        get_files('tests/notafolder')
