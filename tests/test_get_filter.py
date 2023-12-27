@@ -4,28 +4,24 @@ import pytest
 # May change this funciton to accept csv files as well, since it would be reasonably to produce the contents on excel then export
 filterPath = 'tests/filters/'
 
-@pytest.mark.skip(reason="currently unimplemented")
 def test_standard(): # If the filters are changed to work better with the output tests, don't forget to change here
     filters = get_filters(filterPath + 'filter1.txt')
     assert filters == ['a', 'b', 'c']
     assert sorted(filters) == filters
-    assert set(filters) == filters
+    assert len(set(filters)) == len(filters)
 
-@pytest.mark.skip(reason="currently unimplemented")
 def test_order():
     filters = get_filters(filterPath + 'filter2.txt')
     assert filters == ['diogenes', 'europa', 'french']
     assert sorted(filters) == filters
-    assert set(filters) == filters
+    assert len(set(filters)) == len(filters)
 
 # file doesn't exist
-@pytest.mark.skip(reason="currently unimplemented")
 def test_bad_path():
     with pytest.raises(Exception):
         get_filters('notapath')
 
 # If specific file not specified
-@pytest.mark.skip(reason="currently unimplemented")
 def test_folder():
     with pytest.raises(Exception):
         get_filters('culvert-scraper/tests/filters')
