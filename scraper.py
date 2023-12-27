@@ -45,6 +45,14 @@ def get_files(path: str):
 def img_to_data(files: list):
     return []
 
+def valid_name(name: str):
+    # Main thing is ensuring the file being read in uses utf-8 encoding
+    # à á â ä å æ è é ê ë ì í î ï ò ó ô ö ø ù ú û ü ý ÿ, list of known valid chars
+    if not name.isalnum():
+        return False
+    
+    return True
+
 # Expected output is just a list of strings
 # In: str
 # Out: list(str)
@@ -53,14 +61,18 @@ def get_filters(path: str):
     print("Filter check now")
     # If path doesn't exist or file cannot be read, raise exception
     try:
-        with open(path, 'r') as f:
+        with open(path, 'r', encoding='utf-8') as f:
             content = f.read()
             names = content.split()
     except Exception as e:
         raise e
 
     # Basic check that all names are of fine format
-    # print("Error found processing user named: " + name)
+    for name in names:
+        # Need a better check so that it accepts accented characters
+        if not valid_name(name):
+            print("Name found which doesn't follow naming scheme: " + name)
+            raise Exception("Invalid filter")
 
     names.sort()
 

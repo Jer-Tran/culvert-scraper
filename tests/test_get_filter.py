@@ -12,7 +12,7 @@ def test_standard(): # If the filters are changed to work better with the output
 
 def test_order():
     filters = get_filters(filterPath + 'filter2.txt')
-    assert filters == ['d', 'e', 'f']
+    assert filters == ['diogenes', 'europa', 'french']
     assert sorted(filters) == filters
     assert len(set(filters)) == len(filters)
 
@@ -28,12 +28,13 @@ def test_folder():
 
 # Gets a text file that can be read, but the contents aren't in a valid format
 # Maybe this would get expanded upon further
-# Accepting more formats is better than restricting it, and as long as the content is fine, the format doesn't matter
-# def test_invalid_format():
-#     with pytest.raises(Exception):
-#         get_filters(filterPath + 'badformat.txt')
 
 # Names in-game have restrictions, and we are checking similar restrictions also as a sanity check
 def test_invalid_content():
     with pytest.raises(Exception):
         get_filters(filterPath + 'badcontent.txt')
+
+# Accented chars are allowed
+def test_accented_chars():
+    filters = get_filters(filterPath + 'filter3.txt')
+    assert filters == ['Addréss', 'BrÎlliant', 'Cât']
