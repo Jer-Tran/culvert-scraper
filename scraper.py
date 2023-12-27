@@ -170,8 +170,15 @@ def check_output(data: list, filter: list):
 # In: list(str, int)
 # Out: Bool
 def write_output(data: list):
+    # Checking follows format and won't cause problems
+    for item in data:
+        if len(item) < 2 or not isinstance(item[0], str) or not isinstance(item[1], int):
+            raise Exception("Input list does not follow required format")
+
     with open ('output.csv', 'w', encoding='utf-8') as f:
-        f.write("test,a,b,c")
+        f.write("name,score\n")
+        for item in data:
+            f.write(f"{item[0]},{item[1]}\n")
     return True
 
 def main(args: list):
@@ -231,13 +238,18 @@ def main(args: list):
     if data == []:
         print("No data obtained")
         return False
+    print(data)
 
     # Open output file
     # Mabye can automate filename
     #  202X-Week-X, kind of folder
     #  or maybe just YYYY-MM-DD, monday to the sunday
     # write in csv format
-    write_output(data)
+    try:
+        write_output(data)
+    except Exception as e:
+        print("[Error] Failed to write to file: " + e)
+        return False
 
     return True
 
