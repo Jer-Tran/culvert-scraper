@@ -43,7 +43,8 @@ def get_files(path: str):
 # In: list(str)
 # Out: list(str, int)
 def img_to_data(files: list):
-    return []
+    data = [ ('a', 1), ('b', 10), ('c', 100) ] 
+    return data
 
 def valid_name(name: str):
     # Main thing is ensuring the file being read in uses utf-8 encoding
@@ -82,17 +83,20 @@ def get_filters(path: str):
 # In: list(str, int), list(str)
 # Out: list(str, int)
 def translate_names(data: list, filter: list):
-    return []
+    return data
 
 # In: list(str, int), list(str)
 # Out: list(str, int)
 def filter_names(data: list, filter: list):
-    return []
+    return data
 
 # In: list(str, int)
 # Out: list(str, int)
-def check_output(data: list): 
-    return []
+def check_output(data: list, filter: list): 
+    tl_data = translate_names(data, filter)
+    fl_data = filter_names(tl_data, filter)
+
+    return fl_data
 
 # In: list(str, int)
 # Out: Bool
@@ -124,7 +128,7 @@ def main(args: list):
             imgPath, filterPath = filterPath, imgPath
             fileContent = get_files(imgPath)
         except Exception as e:
-            print("Could not find stuff")
+            print("[Error] File contents could not be found: " + e)
             return False
 
     print("Checkpoint B") # remove
@@ -143,20 +147,28 @@ def main(args: list):
     # Process file, get into contents into array
     # This is the core of the program, and will likely be the majority of the work
     # pair (name, score)
-    # img_to_data()
+    data = img_to_data(fileContent)
 
     # Additional processing to fit the guild
     #  Stuff where the truncated names will be translated to full
     #  Checks to compare what names showed up
     #  Filtering of what names check for - ensuring this is an opt-in system
-    # check_output()
+    try:
+        data = check_output(data, filterContent)
+    except Exception as e:
+        print("[Error] " + e)
+        return False
+    
+    if data == []:
+        print("No data obtained")
+        return False
 
     # Open output file
     # Mabye can automate filename
     #  202X-Week-X, kind of folder
     #  or maybe just YYYY-MM-DD, monday to the sunday
     # write in csv format
-    write_output([])
+    write_output(data)
 
     return True
 
