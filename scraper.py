@@ -68,14 +68,18 @@ def get_filters(path: str):
     except Exception as e:
         raise e
 
-    # Basic check that all names are of fine format
+    names.sort()
+
+    # TODO: After image processing step is done, verify that handling of accent names doesn't cause issues of dup data
+    # Check that all names are of fine format and for duplicates
+    prev = None
     for name in names:
-        # Need a better check so that it accepts accented characters
         if not valid_name(name):
             print("Name found which doesn't follow naming scheme: " + name)
             raise Exception("Invalid filter")
-
-    names.sort()
+        elif prev == name:
+            raise Exception("Duplicates Clause - " + name)
+        prev = name
 
     return names
 
