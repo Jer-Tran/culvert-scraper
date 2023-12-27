@@ -2,8 +2,9 @@ from scraper import main
 import pytest
 
 # Due to each input param being a different file type, it should be easy to not care about the order and just check
+# Will have to change these params to a valid one later on
 filterPath = 'tests/filters/filter1.txt'
-folderPath = 'tests/sample4'
+folderPath = 'tests/sample2'
 
 # Standard use case of program
 def test_standard():
