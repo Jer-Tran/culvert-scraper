@@ -84,6 +84,7 @@ def get_filters(path: str):
     return names
 
 # In: string, list( duple(str, int) )
+# Out: int
 def get_index(string: str, items: list):
     print(items)
     for index, item in enumerate(items):
@@ -107,25 +108,26 @@ def translate_names(data: list, filter: list):
 
         # If name has been truncated in-game
         if name[-2:] == "..": # So far, it's been constant that it truncates to a '..' at the end
-            full = name
+            full_name = name
             tr_name = name[:-2]
-            
+
             # Tries to find its full ver in filters
             for field in filter:
+                # gi
                 if len(field) > len(tr_name) and tr_name == field[:len(tr_name)]:
                     # If there are multiple matches, we default to not translating
-                    if full != name:
-                        full = name
+                    if full_name != name:
+                        full_name = name
                         break
-                    full = field
+                    full_name = field
             
             # Used list is for here, if we find another value that uses the same full value, revert old one
-            if get_index(full, used) != -1:
-                i = get_index(full, used)
+            if get_index(full_name, used) != -1:
+                i = get_index(full_name, used)
                 content[i] = tuple(data[i])
             else:
-                content[index] = (full, entry[1])
-                used.append((full, index))
+                content[index] = (full_name, entry[1])
+                used.append((full_name, index))
 
         index += 1
 
@@ -134,7 +136,28 @@ def translate_names(data: list, filter: list):
 # In: list(str, int), list(str)
 # Out: list(str, int)
 def filter_names(data: list, filter: list):
-    return data
+    content = data[:]
+    result = []
+    missed = []
+    seen = []
+    for item in content:
+        # If name seen before, remove from final results if needed
+        if item[0] in seen:
+            index = get_index(item[0], result)
+            # Handles 3+ cases of duplicate names
+            if index != -1:
+                dupe = result.pop(index)
+                missed.append(dupe)
+        # If name passes filter, is added to final result
+        elif item[0] in filter:
+            result.append(item)
+            seen.append(item[0])
+        
+
+        if item not in result:
+            missed.append(item)
+    
+    return result
 
 # In: list(str, int)
 # Out: list(str, int)
