@@ -38,3 +38,8 @@ def test_invalid_content():
 def test_accented_chars():
     filters = get_filters(filterPath + 'filter3.txt')
     assert filters == ['Addréss', 'BrÎlliant', 'Cât']
+
+# A filter with dupliate names
+def test_dupe_name():
+    with pytest.raises(Exception):
+        get_filters(filterPath + 'filter4.txt')

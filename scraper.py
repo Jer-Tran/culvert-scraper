@@ -43,7 +43,8 @@ def get_files(path: str):
 # In: list(str)
 # Out: list(str, int)
 def img_to_data(files: list):
-    return []
+    data = [ ('a', 1), ('b', 10), ('c', 100) ] 
+    return data
 
 def valid_name(name: str):
     # Main thing is ensuring the file being read in uses utf-8 encoding
@@ -67,32 +68,104 @@ def get_filters(path: str):
     except Exception as e:
         raise e
 
-    # Basic check that all names are of fine format
+    names.sort()
+
+    # TODO: After image processing step is done, verify that handling of accent names doesn't cause issues of dup data
+    # Check that all names are of fine format and for duplicates
+    prev = None
     for name in names:
-        # Need a better check so that it accepts accented characters
         if not valid_name(name):
             print("Name found which doesn't follow naming scheme: " + name)
             raise Exception("Invalid filter")
-
-    names.sort()
+        elif prev == name:
+            raise Exception("Duplicates Clause - " + name)
+        prev = name
 
     return names
 
-# There should be a scheme to this, so best to find the pattern
+# In: string, list( duple(str, int) )
+# Out: int
+def get_index(string: str, items: list):
+    print(items)
+    for index, item in enumerate(items):
+        print(item)
+        print(index)
+        if string == item[0]:
+            return index
+
+    return -1
+
+# In cases where there is a truncated name in data, tries best effort to extend it
 # In: list(str, int), list(str)
 # Out: list(str, int)
 def translate_names(data: list, filter: list):
-    return []
+    content = data[:] # Avoids modifying original and needs a copy for later
+    index = 0
+    used = []
+    while index < len(content):
+        entry = content[index]
+        name = entry[0]
+
+        # If name has been truncated in-game
+        if name[-2:] == "..": # So far, it's been constant that it truncates to a '..' at the end
+            full_name = name
+            tr_name = name[:-2]
+
+            # Tries to find its full ver in filters
+            for field in filter:
+                # gi
+                if len(field) > len(tr_name) and tr_name == field[:len(tr_name)]:
+                    # If there are multiple matches, we default to not translating
+                    if full_name != name:
+                        full_name = name
+                        break
+                    full_name = field
+            
+            # Used list is for here, if we find another value that uses the same full value, revert old one
+            if get_index(full_name, used) != -1:
+                i = get_index(full_name, used)
+                content[i] = tuple(data[i])
+            else:
+                content[index] = (full_name, entry[1])
+                used.append((full_name, index))
+
+        index += 1
+
+    return content
 
 # In: list(str, int), list(str)
 # Out: list(str, int)
 def filter_names(data: list, filter: list):
-    return []
+    content = data[:]
+    result = []
+    missed = []
+    seen = []
+    for item in content:
+        # If name seen before, remove from final results if needed
+        if item[0] in seen:
+            index = get_index(item[0], result)
+            # Handles 3+ cases of duplicate names
+            if index != -1:
+                dupe = result.pop(index)
+                missed.append(dupe)
+        # If name passes filter, is added to final result
+        elif item[0] in filter:
+            result.append(item)
+            seen.append(item[0])
+        
+
+        if item not in result:
+            missed.append(item)
+    
+    return result
 
 # In: list(str, int)
 # Out: list(str, int)
-def check_output(data: list): 
-    return []
+def check_output(data: list, filter: list): 
+    tl_data = translate_names(data, filter)
+    fl_data = filter_names(tl_data, filter)
+
+    return fl_data
 
 # In: list(str, int)
 # Out: Bool
@@ -124,7 +197,7 @@ def main(args: list):
             imgPath, filterPath = filterPath, imgPath
             fileContent = get_files(imgPath)
         except Exception as e:
-            print("Could not find stuff")
+            print("[Error] File contents could not be found: " + e)
             return False
 
     print("Checkpoint B") # remove
@@ -143,20 +216,28 @@ def main(args: list):
     # Process file, get into contents into array
     # This is the core of the program, and will likely be the majority of the work
     # pair (name, score)
-    # img_to_data()
+    data = img_to_data(fileContent)
 
     # Additional processing to fit the guild
     #  Stuff where the truncated names will be translated to full
     #  Checks to compare what names showed up
     #  Filtering of what names check for - ensuring this is an opt-in system
-    # check_output()
+    try:
+        data = check_output(data, filterContent)
+    except Exception as e:
+        print("[Error] " + e)
+        return False
+    
+    if data == []:
+        print("No data obtained")
+        return False
 
     # Open output file
     # Mabye can automate filename
     #  202X-Week-X, kind of folder
     #  or maybe just YYYY-MM-DD, monday to the sunday
     # write in csv format
-    write_output([])
+    write_output(data)
 
     return True
 
