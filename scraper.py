@@ -83,11 +83,53 @@ def get_filters(path: str):
 
     return names
 
-# There should be a scheme to this, so best to find the pattern
+# In: string, list( duple(str, int) )
+def get_index(string: str, items: list):
+    print(items)
+    for index, item in enumerate(items):
+        print(item)
+        print(index)
+        if string == item[0]:
+            return index
+
+    return -1
+
+# In cases where there is a truncated name in data, tries best effort to extend it
 # In: list(str, int), list(str)
 # Out: list(str, int)
 def translate_names(data: list, filter: list):
-    return data
+    content = data[:] # Avoids modifying original and needs a copy for later
+    index = 0
+    used = []
+    while index < len(content):
+        entry = content[index]
+        name = entry[0]
+
+        # If name has been truncated in-game
+        if name[-2:] == "..": # So far, it's been constant that it truncates to a '..' at the end
+            full = name
+            tr_name = name[:-2]
+            
+            # Tries to find its full ver in filters
+            for field in filter:
+                if len(field) > len(tr_name) and tr_name == field[:len(tr_name)]:
+                    # If there are multiple matches, we default to not translating
+                    if full != name:
+                        full = name
+                        break
+                    full = field
+            
+            # Used list is for here, if we find another value that uses the same full value, revert old one
+            if get_index(full, used) != -1:
+                i = get_index(full, used)
+                content[i] = tuple(data[i])
+            else:
+                content[index] = (full, entry[1])
+                used.append((full, index))
+
+        index += 1
+
+    return content
 
 # In: list(str, int), list(str)
 # Out: list(str, int)
