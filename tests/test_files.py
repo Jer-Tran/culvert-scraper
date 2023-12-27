@@ -1,4 +1,5 @@
 from scraper import get_files
+import cv2
 import pytest
 
 testPath = 'tests/'
