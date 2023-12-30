@@ -41,6 +41,5 @@ __pycache__
 .pytest_cache
 
 # Hiding certain testing files for now
-tests/sample4
 tests/test.csv
 output.csv

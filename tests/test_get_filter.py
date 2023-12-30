@@ -42,4 +42,4 @@ def test_accented_chars():
 # A filter with dupliate names
 def test_dupe_name():
     with pytest.raises(Exception):
-        get_filters(filterPath + 'filter4.txt')
+        get_filters(filterPath + 'filterdup.txt')

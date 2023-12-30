@@ -4,12 +4,11 @@ import pytest
 # TODO: Fill in the test asserts with appropraite expected output once images are made
 
 # Handling a single file that fits format
-@pytest.mark.skip(reason="currently unimplemented")
 def test_standard():
-    content = get_files('tests/sample4/example.PNG')
+    content = get_files('tests/sample4/1.PNG')
     output = img_to_data(content)
 
-    assert output == []
+    assert output == [('Chocolate', 4978), ('Strawberry', 1122), ('Vanilla', 13197)]
 
 # Handling of multiple files
 @pytest.mark.skip(reason="currently unimplemented")
